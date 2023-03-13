@@ -25,8 +25,8 @@ struct ToDoListView: View {
                     .font(.title2)
                 }
                 // Shorthand calls to onDelete and onMove
-                .onDelete(perform: toDosVM.delete)
-                .onMove(perform: toDosVM.move)
+                .onDelete(perform: toDosVM.deleteToDo)
+                .onMove(perform: toDosVM.moveToDo)
                 
                 // Traditional calls are below
 //                .onDelete { indexSet in
@@ -53,7 +53,7 @@ struct ToDoListView: View {
             }
             .sheet(isPresented: $sheetIsPresented) {
                 NavigationStack {
-                    DetailView(toDo: ToDo(), newToDo: true) //new value
+                    DetailView(toDo: ToDo()) //new value
                 }
             }
             
