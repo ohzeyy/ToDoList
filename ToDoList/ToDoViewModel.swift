@@ -15,6 +15,20 @@ class ToDoViewModel: ObservableObject {
         loadData()
     }
     
+    func toggleCompleted(toDo: ToDo) {
+        // Don't try to update if toDos.id == nil (should never happen)
+        guard toDo.id != nil else {return}
+        
+        // copy toDo (constant) into newToDo (var) so we can update the isCompleted property
+        var newToDo = toDo
+        newToDo.isCompleted.toggle() // flips false to true
+        // Find ID for newToDo in the array of toDos, then update the element at that index with the data in newToDo
+        if let index = toDos.firstIndex(where: {$0.id == newToDo.id}) {
+            toDos[index] = newToDo
+        }
+        saveData()
+    }
+    
     func saveToDo(toDo: ToDo) {
         // if new, append to toDoVM.todos, else update the toDo that was passed in from the list
         if toDo.id == nil {
@@ -22,7 +36,6 @@ class ToDoViewModel: ObservableObject {
             newToDo.id = UUID().uuidString
             toDos.append(newToDo)
         }
-        
         else {
             if let index = toDos.firstIndex(where: {$0.id == toDo.id}) {
                 toDos[index] = toDo

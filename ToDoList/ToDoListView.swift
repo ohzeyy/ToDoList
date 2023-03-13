@@ -11,16 +11,25 @@ struct ToDoListView: View {
     
     @State private var sheetIsPresented = false
     @EnvironmentObject var toDosVM: ToDoViewModel
+    @State var imageString = ""
     
     var body: some View {
         
         NavigationStack {
             List {
                 ForEach(toDosVM.toDos) { toDo in
-                    NavigationLink {
-                        DetailView(toDo: toDo)
-                    } label: {
-                        Text(toDo.item)
+                    HStack {
+                        Image(systemName: toDo.isCompleted ? "checkmark.rectangle" : "rectangle")
+                            .onTapGesture {
+                                toDosVM.toggleCompleted(toDo: toDo)
+                            }
+                        
+                        
+                        NavigationLink {
+                            DetailView(toDo: toDo)
+                        } label: {
+                            Text(toDo.item)
+                        }
                     }
                     .font(.title2)
                 }
